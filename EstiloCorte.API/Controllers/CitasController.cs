@@ -1,4 +1,5 @@
 ﻿
+using EstiloCorte.API.DTOs;
 using EstiloCorte.Application.DTOs;
 using EstiloCorte.Application.Interfaces;
 using EstiloCorte.Domain.Entities;
@@ -24,13 +25,17 @@ namespace EstiloCorte.API.Controllers
             {
                 var cita = await _citaService.CrearAsync(dto);
 
-                return StatusCode(201, cita);
+                return CreatedAtAction(
+                    nameof(ObtenerPorId),
+                    new { id = cita.Id },
+                    CrearRespuesta(cita));
             }
             catch (InvalidOperationException ex)
             {
                 return Conflict(new { mensaje = ex.Message });
             }
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> ObtenerPorId(int id)
         {
@@ -39,7 +44,7 @@ namespace EstiloCorte.API.Controllers
             if (cita == null)
                 return NotFound(new { mensaje = "Cita no encontrada." });
 
-            return Ok(cita);
+            return Ok(CrearRespuesta(cita));
         }
 
         [HttpPatch("{id}/cancelar")]
@@ -62,8 +67,8 @@ namespace EstiloCorte.API.Controllers
 
         [HttpPut("{id}/reprogramar")]
         public async Task<IActionResult> Reprogramar(
-    int id,
-    ReprogramarCitaDto dto)
+            int id,
+            ReprogramarCitaDto dto)
         {
             try
             {
@@ -78,6 +83,24 @@ namespace EstiloCorte.API.Controllers
             {
                 return Conflict(new { mensaje = ex.Message });
             }
+        }
+
+        private static CitaRespuestaDto CrearRespuesta(Cita cita)
+        {
+            return new CitaRespuestaDto
+            {
+                Id = cita.Id,
+                ClienteId = cita.ClienteId,
+                ClienteNombre = cita.Cliente?.Nombre,
+                BarberoId = cita.BarberoId,
+                BarberoNombre = cita.Barbero?.Nombre,
+                ServicioId = cita.ServicioId,
+                ServicioNombre = cita.Servicio?.Nombre,
+                FechaHoraInicio = cita.FechaHoraInicio,
+                FechaHoraFin = cita.FechaHoraFin,
+                Estado = cita.Estado,
+                FechaCreacion = cita.FechaCreacion
+            };
         }
     }
 }

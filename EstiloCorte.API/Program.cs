@@ -6,16 +6,18 @@ using EstiloCorte.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(
+    options.UseSqlite(
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 // Repositorios
 builder.Services.AddScoped<ICitaRepository, CitaRepository>();
 
 builder.Services.AddScoped<IServicioRepository, ServicioRepository>();
+builder.Services.AddScoped<ICatalogoRepository, CatalogoRepository>();
 
 // Servicios de aplicación
 builder.Services.AddScoped<ICitaService, CitaService>();
+builder.Services.AddScoped<ICatalogoService, CatalogoService>();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -23,6 +25,13 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    await using var scope = app.Services.CreateAsyncScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await dbContext.Database.MigrateAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

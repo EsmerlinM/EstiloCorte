@@ -40,22 +40,26 @@
                         </div>
                         <span class="step-number">01</span>
                     </div>
-                    <p class="card-copy">Ingresa los identificadores registrados en tu base de datos.</p>
+                    <p class="card-copy">Selecciona a las personas y el servicio para reservar.</p>
 
                     <form id="create-form">
-                        <div class="field-row">
-                            <label>
-                                ID del cliente
-                                <input name="clienteId" type="number" min="1" placeholder="Ej. 1" required>
-                            </label>
-                            <label>
-                                ID del barbero
-                                <input name="barberoId" type="number" min="1" placeholder="Ej. 1" required>
-                            </label>
-                        </div>
                         <label>
-                            ID del servicio
-                            <input name="servicioId" type="number" min="1" placeholder="Ej. 1" required>
+                            Cliente
+                            <select name="clienteId" data-catalog="clientes" required>
+                                <option value="">Cargando clientes...</option>
+                            </select>
+                        </label>
+                        <label>
+                            Barbero
+                            <select name="barberoId" data-catalog="barberos" required>
+                                <option value="">Cargando barberos...</option>
+                            </select>
+                        </label>
+                        <label>
+                            Servicio
+                            <select name="servicioId" data-catalog="servicios" required>
+                                <option value="">Cargando servicios...</option>
+                            </select>
                         </label>
                         <label>
                             Fecha y hora de inicio
@@ -89,16 +93,18 @@
 
                     <form id="reschedule-form">
                         <p class="form-title">Reprogramar</p>
-                        <div class="field-row">
-                            <label>
-                                ID del barbero
-                                <input name="barberoId" type="number" min="1" placeholder="Ej. 1" required>
-                            </label>
-                            <label>
-                                ID del servicio
-                                <input name="servicioId" type="number" min="1" placeholder="Ej. 1" required>
-                            </label>
-                        </div>
+                        <label>
+                            Barbero
+                            <select name="barberoId" data-catalog="barberos" required>
+                                <option value="">Cargando barberos...</option>
+                            </select>
+                        </label>
+                        <label>
+                            Servicio
+                            <select name="servicioId" data-catalog="servicios" required>
+                                <option value="">Cargando servicios...</option>
+                            </select>
+                        </label>
                         <label>
                             Nueva fecha y hora
                             <input name="fechaHoraInicio" type="datetime-local" required>
@@ -114,6 +120,81 @@
                         <button id="cancel-button" class="button button-danger" type="button">Cancelar</button>
                     </div>
                 </article>
+            </section>
+
+            <section class="catalog-section" aria-labelledby="catalog-title">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">PREPARA TUS CATÁLOGOS</p>
+                        <h2 id="catalog-title">Agrega tus datos</h2>
+                    </div>
+                    <p class="section-copy">Al guardar, quedarán disponibles para crear y reprogramar citas.</p>
+                </div>
+
+                <div class="catalog-grid">
+                    <article class="card catalog-card">
+                        <p class="form-title">Nuevo cliente</p>
+                        <form data-create-catalog="clientes" data-success="Cliente agregado">
+                            <label>
+                                Nombre
+                                <input name="nombre" maxlength="100" autocomplete="name" required>
+                            </label>
+                            <label>
+                                Teléfono
+                                <input name="telefono" maxlength="30" type="tel" autocomplete="tel" required>
+                            </label>
+                            <label>
+                                Correo <span class="optional">(opcional)</span>
+                                <input name="correo" maxlength="150" type="email" autocomplete="email">
+                            </label>
+                            <button class="button button-secondary button-wide" type="submit">Guardar cliente</button>
+                        </form>
+                    </article>
+
+                    <article class="card catalog-card">
+                        <p class="form-title">Nuevo barbero</p>
+                        <form data-create-catalog="barberos" data-success="Barbero agregado">
+                            <label>
+                                Nombre
+                                <input name="nombre" maxlength="100" autocomplete="name" required>
+                            </label>
+                            <label>
+                                Teléfono <span class="optional">(opcional)</span>
+                                <input name="telefono" maxlength="30" type="tel">
+                            </label>
+                            <label>
+                                Correo <span class="optional">(opcional)</span>
+                                <input name="correo" maxlength="150" type="email">
+                            </label>
+                            <button class="button button-secondary button-wide" type="submit">Guardar barbero</button>
+                        </form>
+                    </article>
+
+                    <article class="card catalog-card">
+                        <p class="form-title">Nuevo servicio</p>
+                        <form data-create-catalog="servicios" data-success="Servicio agregado">
+                            <label>
+                                Nombre
+                                <input name="nombre" maxlength="100" required>
+                            </label>
+                            <label>
+                                Descripción <span class="optional">(opcional)</span>
+                                <input name="descripcion" maxlength="250">
+                            </label>
+                            <div class="field-row">
+                                <label>
+                                    Precio
+                                    <input name="precio" type="number" min="0" max="999999.99" step="0.01" required>
+                                </label>
+                                <label>
+                                    Duración (min)
+                                    <input name="duracionMinutos" type="number" min="1" max="600" step="1" required>
+                                </label>
+                            </div>
+                            <button class="button button-secondary button-wide" type="submit">Guardar servicio</button>
+                        </form>
+                    </article>
+                </div>
             </section>
 
             <section id="result-panel" class="result-panel" aria-live="polite" hidden>

@@ -1,17 +1,23 @@
 # Estilo Corte
 
+## Base de datos local
+
+En desarrollo, la aplicación usa SQLite y guarda la base en
+`EstiloCorte.API/EstiloCorte.db`. La primera vez que se inicia, EF Core crea el
+archivo y aplica las migraciones automáticamente. No se cargan datos de ejemplo.
+
 ## Probar la gestión de citas
 
-La API sirve el frontend en la raíz y expone las operaciones de citas en
-`/api/citas`. Para iniciar la aplicación en desarrollo:
+Para iniciar la API y el frontend:
 
 ```powershell
 dotnet run --project EstiloCorte.API --launch-profile http
 ```
 
-Abre `http://localhost:5165` en el navegador. En la pantalla puedes crear una
-cita, consultar una cita por ID, reprogramarla o cancelarla. Usa IDs que ya
-existan en la base de datos para el cliente, barbero y servicio.
+Abre `http://localhost:5165` en el navegador. Agrega clientes, barberos y
+servicios desde la sección de catálogos; aparecerán por nombre en las listas
+para crear y reprogramar citas. También puedes consultar una cita por ID y
+cancelarla.
 
 La API y el frontend comparten el mismo origen, por lo que no se requiere
 configuración adicional de CORS. La documentación OpenAPI continúa disponible
