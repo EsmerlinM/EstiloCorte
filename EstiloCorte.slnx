@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="EstiloCorte.API/EstiloCorte.API.csproj" />
+  <Project Path="EstiloCorte.Application/EstiloCorte.Application.csproj" />
+  <Project Path="EstiloCorte.Domain/EstiloCorte.Domain.csproj" />
+  <Project Path="EstiloCorte.Infrastructure/EstiloCorte.Infrastructure.csproj" />
+</Solution>

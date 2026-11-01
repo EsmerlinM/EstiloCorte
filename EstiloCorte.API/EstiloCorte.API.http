@@ -1,0 +1,6 @@
+@EstiloCorte.API_HostAddress = http://localhost:5165
+
+GET {{EstiloCorte.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
