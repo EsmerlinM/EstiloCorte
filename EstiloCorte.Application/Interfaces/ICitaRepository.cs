@@ -13,6 +13,10 @@ namespace EstiloCorte.Application.Interfaces
             DateTime fechaFin,
             int? excluirCitaId = null);
 
+        Task<List<Cita>> ObtenerEnRangoAsync(
+            DateTime fechaInicio,
+            DateTime fechaFin);
+
         Task AgregarAsync(Cita cita);
 
         Task GuardarCambiosAsync();

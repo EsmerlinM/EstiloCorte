@@ -122,6 +122,26 @@
                 </article>
             </section>
 
+            <section class="calendar-section" aria-labelledby="calendar-title">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">AGENDA SEMANAL</p>
+                        <h2 id="calendar-title">Calendario semanal</h2>
+                    </div>
+                    <div class="calendar-controls">
+                        <button id="calendar-prev" class="calendar-nav" type="button" aria-label="Semana anterior">←</button>
+                        <button id="calendar-today" class="button button-secondary" type="button">Hoy</button>
+                        <button id="calendar-next" class="calendar-nav" type="button" aria-label="Semana siguiente">→</button>
+                    </div>
+                </div>
+                <p id="calendar-range" class="section-copy calendar-range"></p>
+                <div class="calendar-scroll">
+                    <div id="calendar-grid" class="calendar-grid" aria-live="polite">
+                        <p class="calendar-empty">Cargando citas...</p>
+                    </div>
+                </div>
+            </section>
+
             <section class="catalog-section" aria-labelledby="catalog-title">
                 <div class="section-heading">
                     <div>
@@ -206,6 +226,11 @@
                     <button id="clear-result" class="clear-button" type="button" aria-label="Cerrar resultado">×</button>
                 </div>
                 <pre id="result-body"></pre>
+                <section id="suggestions-panel" class="suggestions-panel" hidden>
+                    <h3>Horarios alternativos disponibles</h3>
+                    <p>Selecciona una opción para completar el horario del formulario.</p>
+                    <div id="suggestions-list" class="suggestions-list"></div>
+                </section>
             </section>
         </main>
 

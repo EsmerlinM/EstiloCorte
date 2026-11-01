@@ -1,6 +1,7 @@
 ﻿
 using EstiloCorte.API.DTOs;
 using EstiloCorte.Application.DTOs;
+using EstiloCorte.Application.Exceptions;
 using EstiloCorte.Application.Interfaces;
 using EstiloCorte.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -30,10 +31,35 @@ namespace EstiloCorte.API.Controllers
                     new { id = cita.Id },
                     CrearRespuesta(cita));
             }
+            catch (ConflictoHorarioException ex)
+            {
+                return Conflict(new
+                {
+                    mensaje = ex.Message,
+                    horariosSugeridos = ex.HorariosSugeridos
+                });
+            }
             catch (InvalidOperationException ex)
             {
                 return Conflict(new { mensaje = ex.Message });
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ObtenerEnRango(
+            [FromQuery] DateTime desde,
+            [FromQuery] DateTime hasta)
+        {
+            if (hasta <= desde || hasta - desde > TimeSpan.FromDays(31))
+            {
+                return BadRequest(new
+                {
+                    mensaje = "El rango debe ser válido y no puede superar 31 días."
+                });
+            }
+
+            var citas = await _citaService.ObtenerEnRangoAsync(desde, hasta);
+            return Ok(citas.Select(CrearRespuesta));
         }
 
         [HttpGet("{id}")]
@@ -78,6 +104,14 @@ namespace EstiloCorte.API.Controllers
                     return NotFound(new { mensaje = "Cita no encontrada." });
 
                 return Ok(new { mensaje = "Cita reprogramada correctamente." });
+            }
+            catch (ConflictoHorarioException ex)
+            {
+                return Conflict(new
+                {
+                    mensaje = ex.Message,
+                    horariosSugeridos = ex.HorariosSugeridos
+                });
             }
             catch (InvalidOperationException ex)
             {

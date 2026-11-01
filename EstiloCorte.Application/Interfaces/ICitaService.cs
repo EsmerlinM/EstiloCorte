@@ -8,6 +8,7 @@ namespace EstiloCorte.Application.Interfaces
     {
         Task<Cita> CrearAsync(CrearCitaDto dto);
         Task<Cita?> ObtenerPorIdAsync(int id);
+        Task<List<Cita>> ObtenerEnRangoAsync(DateTime fechaInicio, DateTime fechaFin);
         Task<bool> CancelarAsync(int id);
         Task<bool> ReprogramarAsync(int id, ReprogramarCitaDto dto);
     }

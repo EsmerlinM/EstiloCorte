@@ -42,6 +42,22 @@ namespace EstiloCorte.Infrastructure.Repositories
         .ToListAsync();
         }
 
+        public async Task<List<Cita>> ObtenerEnRangoAsync(
+            DateTime fechaInicio,
+            DateTime fechaFin)
+        {
+            return await _context.Citas
+                .AsNoTracking()
+                .Include(c => c.Cliente)
+                .Include(c => c.Barbero)
+                .Include(c => c.Servicio)
+                .Where(c =>
+                    c.FechaHoraInicio < fechaFin &&
+                    c.FechaHoraFin > fechaInicio)
+                .OrderBy(c => c.FechaHoraInicio)
+                .ToListAsync();
+        }
+
         public async Task AgregarAsync(Cita cita)
         {
             await _context.Citas.AddAsync(cita);
