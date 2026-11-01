@@ -22,4 +22,8 @@
     <ProjectReference Include="..\EstiloCorte.Domain\EstiloCorte.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configurations\" />
+  </ItemGroup>
+
 </Project>

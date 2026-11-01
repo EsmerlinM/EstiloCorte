@@ -1,5 +1,21 @@
-var builder = WebApplication.CreateBuilder(args);
+using EstiloCorte.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using EstiloCorte.Application.Interfaces;
+using EstiloCorte.Application.Services;
+using EstiloCorte.Infrastructure.Repositories;
 
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
+// Repositorios
+builder.Services.AddScoped<ICitaRepository, CitaRepository>();
+
+builder.Services.AddScoped<IServicioRepository, ServicioRepository>();
+
+// Servicios de aplicación
+builder.Services.AddScoped<ICitaService, CitaService>();
 // Add services to the container.
 
 builder.Services.AddControllers();
