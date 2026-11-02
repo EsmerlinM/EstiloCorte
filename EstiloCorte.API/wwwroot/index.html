@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f1e8">
+    <title>Estilo Corte | Citas</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+</head>
+<body>
+    <div class="page-shell">
+        <header class="topbar">
+            <a class="brand" href="/" aria-label="Estilo Corte, inicio">
+                <span class="brand-mark" aria-hidden="true">EC</span>
+                <span>ESTILO <strong>CORTE</strong></span>
+            </a>
+            <span class="topbar-note">Panel de pruebas · API de citas</span>
+        </header>
+
+        <main>
+            <section class="intro">
+                <p class="eyebrow">GESTIÓN DE CITAS</p>
+                <h1>Tu próxima cita,<br><span>en buenas manos.</span></h1>
+                <p class="intro-copy">Prueba las operaciones disponibles de la API desde un solo lugar.</p>
+                <div class="feature-list" aria-label="Operaciones disponibles">
+                    <span><i></i> Crear</span>
+                    <span><i></i> Consultar</span>
+                    <span><i></i> Reprogramar</span>
+                    <span><i></i> Cancelar</span>
+                </div>
+            </section>
+
+            <section class="workspace" aria-label="Operaciones de citas">
+                <article class="card create-card">
+                    <div class="card-heading">
+                        <div>
+                            <p class="eyebrow">NUEVA RESERVA</p>
+                            <h2>Crear una cita</h2>
+                        </div>
+                        <span class="step-number">01</span>
+                    </div>
+                    <p class="card-copy">Selecciona a las personas y el servicio para reservar.</p>
+
+                    <form id="create-form">
+                        <label>
+                            Cliente
+                            <select name="clienteId" data-catalog="clientes" required>
+                                <option value="">Cargando clientes...</option>
+                            </select>
+                        </label>
+                        <label>
+                            Barbero
+                            <select name="barberoId" data-catalog="barberos" required>
+                                <option value="">Cargando barberos...</option>
+                            </select>
+                        </label>
+                        <label>
+                            Servicio
+                            <select name="servicioId" data-catalog="servicios" required>
+                                <option value="">Cargando servicios...</option>
+                            </select>
+                        </label>
+                        <label>
+                            Fecha y hora de inicio
+                            <input name="fechaHoraInicio" type="datetime-local" required>
+                        </label>
+                        <button class="button button-primary" type="submit">
+                            Crear cita <span aria-hidden="true">↗</span>
+                        </button>
+                    </form>
+                </article>
+
+                <article class="card manage-card">
+                    <div class="card-heading">
+                        <div>
+                            <p class="eyebrow">ADMINISTRAR</p>
+                            <h2>Buscar o actualizar</h2>
+                        </div>
+                        <span class="step-number">02</span>
+                    </div>
+                    <p class="card-copy">Consulta una cita por su ID y gestiona su horario o estado.</p>
+
+                    <form id="lookup-form" class="lookup-form">
+                        <label for="lookup-id">ID de la cita</label>
+                        <div class="inline-field">
+                            <input id="lookup-id" name="id" type="number" min="1" placeholder="Ej. 1" required>
+                            <button class="button button-secondary" type="submit">Consultar</button>
+                        </div>
+                    </form>
+
+                    <div class="divider"></div>
+
+                    <form id="reschedule-form">
+                        <p class="form-title">Reprogramar</p>
+                        <label>
+                            Barbero
+                            <select name="barberoId" data-catalog="barberos" required>
+                                <option value="">Cargando barberos...</option>
+                            </select>
+                        </label>
+                        <label>
+                            Servicio
+                            <select name="servicioId" data-catalog="servicios" required>
+                                <option value="">Cargando servicios...</option>
+                            </select>
+                        </label>
+                        <label>
+                            Nueva fecha y hora
+                            <input name="fechaHoraInicio" type="datetime-local" required>
+                        </label>
+                        <button class="button button-secondary button-wide" type="submit">Guardar nuevo horario</button>
+                    </form>
+
+                    <div class="cancel-row">
+                        <div>
+                            <p class="form-title">Cancelar cita</p>
+                            <p class="muted-copy">Esta acción no se puede deshacer.</p>
+                        </div>
+                        <button id="cancel-button" class="button button-danger" type="button">Cancelar</button>
+                    </div>
+                </article>
+            </section>
+
+            <section class="calendar-section" aria-labelledby="calendar-title">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">AGENDA SEMANAL</p>
+                        <h2 id="calendar-title">Calendario semanal</h2>
+                    </div>
+                    <div class="calendar-controls">
+                        <button id="calendar-prev" class="calendar-nav" type="button" aria-label="Semana anterior">←</button>
+                        <button id="calendar-today" class="button button-secondary" type="button">Hoy</button>
+                        <button id="calendar-next" class="calendar-nav" type="button" aria-label="Semana siguiente">→</button>
+                    </div>
+                </div>
+                <p id="calendar-range" class="section-copy calendar-range"></p>
+                <div class="calendar-scroll">
+                    <div id="calendar-grid" class="calendar-grid" aria-live="polite">
+                        <p class="calendar-empty">Cargando citas...</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="catalog-section" aria-labelledby="catalog-title">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">PREPARA TUS CATÁLOGOS</p>
+                        <h2 id="catalog-title">Agrega tus datos</h2>
+                    </div>
+                    <p class="section-copy">Al guardar, quedarán disponibles para crear y reprogramar citas.</p>
+                </div>
+
+                <div class="catalog-grid">
+                    <article class="card catalog-card">
+                        <p class="form-title">Nuevo cliente</p>
+                        <form data-create-catalog="clientes" data-success="Cliente agregado">
+                            <label>
+                                Nombre
+                                <input name="nombre" maxlength="100" autocomplete="name" required>
+                            </label>
+                            <label>
+                                Teléfono
+                                <input name="telefono" maxlength="30" type="tel" autocomplete="tel" required>
+                            </label>
+                            <label>
+                                Correo <span class="optional">(opcional)</span>
+                                <input name="correo" maxlength="150" type="email" autocomplete="email">
+                            </label>
+                            <button class="button button-secondary button-wide" type="submit">Guardar cliente</button>
+                        </form>
+                    </article>
+
+                    <article class="card catalog-card">
+                        <p class="form-title">Nuevo barbero</p>
+                        <form data-create-catalog="barberos" data-success="Barbero agregado">
+                            <label>
+                                Nombre
+                                <input name="nombre" maxlength="100" autocomplete="name" required>
+                            </label>
+                            <label>
+                                Teléfono <span class="optional">(opcional)</span>
+                                <input name="telefono" maxlength="30" type="tel">
+                            </label>
+                            <label>
+                                Correo <span class="optional">(opcional)</span>
+                                <input name="correo" maxlength="150" type="email">
+                            </label>
+                            <button class="button button-secondary button-wide" type="submit">Guardar barbero</button>
+                        </form>
+                    </article>
+
+                    <article class="card catalog-card">
+                        <p class="form-title">Nuevo servicio</p>
+                        <form data-create-catalog="servicios" data-success="Servicio agregado">
+                            <label>
+                                Nombre
+                                <input name="nombre" maxlength="100" required>
+                            </label>
+                            <label>
+                                Descripción <span class="optional">(opcional)</span>
+                                <input name="descripcion" maxlength="250">
+                            </label>
+                            <div class="field-row">
+                                <label>
+                                    Precio
+                                    <input name="precio" type="number" min="0" max="999999.99" step="0.01" required>
+                                </label>
+                                <label>
+                                    Duración (min)
+                                    <input name="duracionMinutos" type="number" min="1" max="600" step="1" required>
+                                </label>
+                            </div>
+                            <button class="button button-secondary button-wide" type="submit">Guardar servicio</button>
+                        </form>
+                    </article>
+                </div>
+            </section>
+
+            <section id="result-panel" class="result-panel" aria-live="polite" hidden>
+                <div class="result-heading">
+                    <div>
+                        <p class="eyebrow">RESPUESTA DE LA API</p>
+                        <h2 id="result-title">Resultado</h2>
+                    </div>
+                    <button id="clear-result" class="clear-button" type="button" aria-label="Cerrar resultado">×</button>
+                </div>
+                <pre id="result-body"></pre>
+                <section id="suggestions-panel" class="suggestions-panel" hidden>
+                    <h3>Horarios alternativos disponibles</h3>
+                    <p>Selecciona una opción para completar el horario del formulario.</p>
+                    <div id="suggestions-list" class="suggestions-list"></div>
+                </section>
+            </section>
+        </main>
+
+        <footer>
+            <span>ESTILO CORTE</span>
+            <span>Reservas simples. Estilo impecable.</span>
+        </footer>
+    </div>
+</body>
+</html>
